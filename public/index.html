@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Controle de Estoque Inteligente</title>
+    <link rel="stylesheet" href="style.css?v=8">
+    <meta name="theme-color" content="#0f172a">
+</head>
+<body>
+    <header class="app-header">
+        <div class="header-main">
+            <div class="logo-title">
+                <h1 id="logo-sistema" style="cursor: pointer; user-select: none;">Controle de Estoque Inteligente</h1>
+                <span class="badge-status">Sistema Ativo</span>
+            </div>
+            
+            <div class="header-right-group">
+                <div class="usuario-container">
+                    <label for="input-usuario-ativo">Usuario:</label>
+                    <input type="text" id="input-usuario-ativo" readonly>
+                </div>
+                <div class="relogio-container" id="relogio-container">
+                    <span class="relogio-data" id="relogio-data">--/--/----</span>
+                    <span class="relogio-hora" id="relogio-hora">00:00:00</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="dashboard-cards">
+            <div class="dash-card">
+                <span class="dash-label">Total de Itens</span>
+                <span class="dash-value" id="dash-total-itens">0</span>
+            </div>
+            <div class="dash-card alert-warning">
+                <span class="dash-label">A Vencer</span>
+                <span class="dash-value" id="dash-a-vencer">0</span>
+            </div>
+            <div class="dash-card alert-danger">
+                <span class="dash-label">Vencidos</span>
+                <span class="dash-value" id="dash-vencidos">0</span>
+            </div>
+            <div class="dash-card alert-info">
+                <span class="dash-label">Estoque Baixo</span>
+                <span class="dash-value" id="dash-estoque-baixo">0</span>
+            </div>
+        </div>
+    </header>
+
+    <div class="app-layout">
+        <aside class="sidebar-mural">
+            <div class="mural-header">
+                <h2>Mural de Avisos e Lembretes</h2>
+            </div>
+            <form id="form-mural" class="mural-form">
+                <input type="text" id="mural-texto" placeholder="Novo recado..." required>
+                <div class="mural-datetime-group">
+                    <label for="mural-datahora">Agendar Data e Hora:</label>
+                    <input type="datetime-local" id="mural-datahora" required>
+                </div>
+                <button type="submit" class="btn btn-primary btn-full">Fixar Lembrete</button>
+            </form>
+            <div class="mural-lista" id="mural-lista">
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <div class="top-controls">
+                <nav class="nav-tabs">
+                    <button class="tab-btn active" data-target="aba-cards">Cards</button>
+                    <button class="tab-btn" data-target="aba-tabela">Tabela Completa</button>
+                    <button class="tab-btn" data-target="aba-calendario">Calendario</button>
+                    <button class="tab-btn" data-target="aba-historico">Historico</button>
+                </nav>
+
+                <div class="actions-group">
+                    <input type="text" id="campo-busca" placeholder="Buscar produto...">
+                    <button class="btn btn-success" id="btn-novo-produto">Novo Produto</button>
+                    <button class="btn btn-secondary" id="btn-exportar">Exportar CSV</button>
+                </div>
+            </div>
+
+            <section id="aba-cards" class="tab-content active">
+                <div class="grid-cards" id="container-cards">
+                </div>
+            </section>
+
+            <section id="aba-tabela" class="tab-content">
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Produto</th>
+                                <th>Categoria</th>
+                                <th>Estoque Total</th>
+                                <th>Lotes Ativos</th>
+                                <th>Validade</th>
+                                <th>Status</th>
+                                <th>Acoes</th>
+                            </tr>
+                        </thead>
+                        <tbody id="corpo-tabela-produtos">
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="aba-calendario" class="tab-content">
+                <div class="calendario-container">
+                    <div class="calendario-header">
+                        <div class="calendario-nav">
+                            <button class="btn btn-secondary" id="cal-btn-prev">Anterior</button>
+                            <button class="btn btn-primary" id="cal-btn-today">Hoje</button>
+                            <button class="btn btn-secondary" id="cal-btn-next">Proximo</button>
+                        </div>
+                        <h2 id="cal-titulo-mes">Mes Ano</h2>
+                        <div class="calendario-legenda">
+                            <span class="legenda-item"><span class="dot dot-lembrete"></span> Lembrete</span>
+                            <span class="legenda-item"><span class="dot dot-validade"></span> Validade</span>
+                            <span class="legenda-item"><span class="dot dot-vencido"></span> Vencido</span>
+                        </div>
+                    </div>
+                    <div class="calendario-grid-header">
+                        <div>Dom</div><div>Seg</div><div>Ter</div><div>Qua</div><div>Qui</div><div>Sex</div><div>Sab</div>
+                    </div>
+                    <div class="calendario-grid" id="calendario-dias-grid">
+                    </div>
+                </div>
+            </section>
+
+            <section id="aba-historico" class="tab-content">
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Data e Hora</th>
+                                <th>Usuario</th>
+                                <th>Operacao</th>
+                                <th>Detalhe</th>
+                            </tr>
+                        </thead>
+                        <tbody id="corpo-tabela-historico">
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <div class="modal-overlay" id="modal-produto">
+        <div class="modal-card">
+            <h3>Cadastrar Novo Produto</h3>
+            <form id="form-produto">
+                <div class="form-group">
+                    <label>Nome do Produto:</label>
+                    <input type="text" id="prod-nome" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Categoria:</label>
+                        <input type="text" id="prod-categoria" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Unidade de Medida:</label>
+                        <select id="prod-unidade">
+                            <option value="und">und</option>
+                            <option value="kg">kg</option>
+                            <option value="L">L</option>
+                            <option value="cx">cx</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Estoque Minimo:</label>
+                    <input type="number" id="prod-minimo" value="5" min="0" required>
+                </div>
+                <div class="form-group">
+                    <label>Observacoes:</label>
+                    <input type="text" id="prod-obs" placeholder="Opcional">
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary btn-fechar-modal">Cancelar</button>
+                    <button type="submit" class="btn btn-success">Salvar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="modal-lote">
+        <div class="modal-card">
+            <h3>Nova Entrada de Lote</h3>
+            <p id="lote-produto-nome" class="subtitulo-modal"></p>
+            <form id="form-lote">
+                <input type="hidden" id="lote-produto-id">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Marca:</label>
+                        <input type="text" id="lote-marca" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Quantidade:</label>
+                        <input type="number" id="lote-qtd" step="0.01" min="0.01" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Validade:</label>
+                    <input type="date" id="lote-validade" required>
+                </div>
+                <div class="form-group">
+                    <label>Observacoes:</label>
+                    <input type="text" id="lote-obs" placeholder="Opcional">
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary btn-fechar-modal">Cancelar</button>
+                    <button type="submit" class="btn btn-success">Adicionar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="modal-baixa">
+        <div class="modal-card">
+            <h3>Baixa de Estoque</h3>
+            <p id="baixa-produto-nome" class="subtitulo-modal"></p>
+            <form id="form-baixa">
+                <input type="hidden" id="baixa-produto-id">
+                <div class="form-group">
+                    <label>Quantidade:</label>
+                    <input type="number" id="baixa-qtd" step="0.01" min="0.01" required>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary btn-fechar-modal">Cancelar</button>
+                    <button type="submit" class="btn btn-danger">Confirmar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="modal-dia-detalhes">
+        <div class="modal-card modal-lg">
+            <h3 id="modal-dia-titulo">Eventos</h3>
+            <div id="modal-dia-lista" class="linha-tempo-container">
+            </div>
+            <div class="modal-actions">
+                <button type="button" class="btn btn-primary btn-fechar-modal">Fechar</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js?v=8"></script>
+</body>
+</html>
