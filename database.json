@@ -1,0 +1,87 @@
+{
+  "produtos": [
+    {
+      "nome": "arroz",
+      "categoria": "Estoque Seco",
+      "unidade": "kg",
+      "estoqueMinimo": "5",
+      "observacao": "teste",
+      "id": 1793014478937,
+      "lotes": [
+        {
+          "marca": "Dona zeze",
+          "quantidade": 80,
+          "validade": "2026-10-27",
+          "observacao": "",
+          "id": 1793014606572
+        }
+      ]
+    },
+    {
+      "nome": "arroz",
+      "categoria": "Estoque Seco",
+      "unidade": "kg",
+      "estoqueMinimo": "10",
+      "observacao": "",
+      "id": 1793027927250,
+      "lotes": [
+        {
+          "marca": "andorinha",
+          "quantidade": 150,
+          "validade": "2026-10-28",
+          "observacao": "",
+          "id": 1793027966554
+        }
+      ]
+    }
+  ],
+  "lotes": [],
+  "historico": [
+    {
+      "id": 1793027966554,
+      "dataHora": "2026-10-26T15:19:26.554Z",
+      "usuario": "SALGADO",
+      "acao": "Entrada de Lote",
+      "detalhe": "andorinha"
+    },
+    {
+      "id": 1793027927250,
+      "dataHora": "2026-10-26T15:18:47.250Z",
+      "usuario": "SALGADO",
+      "acao": "Cadastro de Produto",
+      "detalhe": "arroz"
+    },
+    {
+      "id": 1793014620413,
+      "dataHora": "2026-10-26T11:37:00.413Z",
+      "acao": "Baixa de Estoque",
+      "detalhe": "Baixa FIFO de 20 kg do produto \"arroz\"."
+    },
+    {
+      "id": 1793014606572,
+      "dataHora": "2026-10-26T11:36:46.572Z",
+      "acao": "Entrada de Lote",
+      "detalhe": "Lote \"Dona zeze\" (100 kg) adicionado ao produto \"arroz\". Validade: 2026-10-27"
+    },
+    {
+      "id": 1793014573458,
+      "dataHora": "2026-10-26T11:36:13.458Z",
+      "acao": "Lembrete Concluido",
+      "detalhe": "Lembrete marcado como feito: \"teste\""
+    },
+    {
+      "id": 1793014567594,
+      "dataHora": "2026-10-26T11:36:07.594Z",
+      "acao": "Novo Lembrete",
+      "detalhe": "Aviso/Lembrete criado: \"teste\""
+    },
+    {
+      "id": 1793014478937,
+      "dataHora": "2026-10-26T11:34:38.937Z",
+      "acao": "Cadastro de Produto",
+      "detalhe": "Produto \"arroz\" cadastrado."
+    }
+  ],
+  "avisos": [],
+  "mural": []
+}
